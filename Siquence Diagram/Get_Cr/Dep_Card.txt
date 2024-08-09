@@ -1,0 +1,43 @@
+@startuml
+actor Клиент as Client
+participant "Система регистрации" as RegistrationSystem
+participant "MQ" as MQ
+participant "Антифрод" as AntifraudSystem
+participant "Выпуск карты" as PrintingSystem
+participant "Отделение банка" as DistributionPoint
+
+skinparam responseMessageBelowArrow true
+Client -[#blue]> RegistrationSystem: POST: "Заполненная анкета"
+Client <[#green]-- RegistrationSystem: Response: 200 : OK
+
+skinparam sequenceMessageAlign center
+alt Анкета прошла валидацию
+    RegistrationSystem -[#blue]> MQ: POST: id{dataClient}
+    skinparam responseMessageBelowArrow true
+    MQ -[#blue]> AntifraudSystem: POST:id{dataClient}
+    note right: Рассмотрение в теченни 24ч.
+    MQ <[#green]-- AntifraudSystem : Response: 200 : OK
+    MQ --[#ORANGE]> Client: PUSH: "Ваша заявка на рассмотрении!"
+    alt Фрод не пройден
+        AntifraudSystem -[#red]> MQ: Отказ
+        MQ --[#orange]> Client: PUSH: Вам отказано в получении карты!
+    else Фрод пройден
+        loop EVERY 3H
+        MQ -[#blue]> AntifraudSystem: GET : Status{Client}
+        MQ <[#green]-- AntifraudSystem : Response: Actual Status{ID_Client}
+        end
+        MQ --[#orange]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
+        note right: Отправка PUSH-уведомлений осуществляется с 8:00 до 22:00!
+        AntifraudSystem -[#blue]> PrintingSystem: POST : Выпуск карты
+        AntifraudSystem <[#green]-- PrintingSystem : Response: 200 : OK
+        loop EVERY MONING AT 8am
+        DistributionPoint -[#blue]> PrintingSystem : GET : Staus ID_card
+        skinparam responseMessageBelowArrow true
+        DistributionPoint <[#green]-- PrintingSystem: POST : Переданно в отделение
+        end
+        DistributionPoint --[#orange]> Client: PUSH: Карта готова к выдаче. Приди и возьми ее :)
+    end
+else Анкета не прошла валидацию
+    RegistrationSystem --[#red]> Client: УВЫ! Ты криво заполнил данные! Иди учись!
+end
+@enduml
