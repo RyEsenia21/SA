@@ -23,7 +23,7 @@ alt#FF1493 Анкета прошла валидацию
         MQ --[#F4A460]> Client: PUSH: Вам отказано в получении карты!
     else Фрод пройден
         loop#FF6347 EVERY 3H
-        MQ -[#blue]> AntifraudSystem: GET : Status{Client}
+        MQ -[#blue]> AntifraudSystem: GET : Status{Client} : ok
         MQ <[#green]-- AntifraudSystem : Response: Actual Status{ID_Client}
         end
         MQ --[#F4A460]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
