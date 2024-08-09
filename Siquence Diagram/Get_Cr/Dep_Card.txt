@@ -26,11 +26,11 @@ alt#FF1493 Анкета прошла валидацию
         MQ -[#blue]> AntifraudSystem: GET : Status{Client} : ok
         MQ <[#green]-- AntifraudSystem : Response: Actual Status{ID_Client}
         end
-        MQ --[#F4A460]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
-        note right: Отправка PUSH-уведомлений осуществляется с 8:00 до 22:00!
         AntifraudSystem -[#blue]> PrintingSystem: POST : Выпусти и отправь карту
         note right: До 3-х раб.дней!
         AntifraudSystem <[#green]-- PrintingSystem : Response: OK
+        MQ --[#F4A460]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
+        note right: Отправка PUSH-уведомлений осуществляется с 8:00 до 22:00!
         loop#FF6347 EVERY MONING AT 8am
         DistributionPoint -[#blue]> PrintingSystem : GET : Staus ID_card
         skinparam responseMessageBelowArrow true
