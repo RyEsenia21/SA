@@ -36,7 +36,7 @@ alt#FF1493 Анкета прошла валидацию
         skinparam responseMessageBelowArrow true
         DistributionPoint <[#green]-- PrintingSystem: POST : Переданно в отделение
         end
-        DistributionPoint --[#F4A460]> Client: PUSH: Карта готова к выдаче. Приди и возьми ее :)
+        DistributionPoint --[#F4A460]> Client: PUSH: Карта готова к выдаче! Приди и возьми ее cowboy &#128522;
     end
 else Анкета не прошла валидацию
     RegistrationSystem --[#red]> Client: Response : УВЫ! Ты криво заполнил данные! Иди учись!
