@@ -8,7 +8,7 @@ participant "Отделение банка" as DistributionPoint #32CD32
 
 skinparam responseMessageBelowArrow true
 Client -[#blue]> RegistrationSystem: POST: "Заполненная анкета"
-Client <[#green]-- RegistrationSystem: Response: 200 : OK
+Client <[#green]-- RegistrationSystem: Response:  OK
 
 skinparam sequenceMessageAlign center
 alt#FF1493 Анкета прошла валидацию
@@ -16,7 +16,7 @@ alt#FF1493 Анкета прошла валидацию
     skinparam responseMessageBelowArrow true
     MQ -[#blue]> AntifraudSystem: POST:id{dataClient}
     note right: Рассмотрение в теченни 24ч.
-    MQ <[#green]-- AntifraudSystem : Response: 200 : OK
+    MQ <[#green]-- AntifraudSystem : Response: OK
     MQ --[#F4A460]> Client: PUSH: "Ваша заявка на рассмотрении!"
     alt#FF1493 Фрод не пройден
         AntifraudSystem -[#red]> MQ: Отказ
@@ -28,8 +28,9 @@ alt#FF1493 Анкета прошла валидацию
         end
         MQ --[#F4A460]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
         note right: Отправка PUSH-уведомлений осуществляется с 8:00 до 22:00!
-        AntifraudSystem -[#blue]> PrintingSystem: POST : Выпуск карты
-        AntifraudSystem <[#green]-- PrintingSystem : Response: 200 : OK
+        AntifraudSystem -[#blue]> PrintingSystem: POST : Выпусти карту
+        note right: До 3-х раб.дней!
+        AntifraudSystem <[#green]-- PrintingSystem : Response: OK
         loop#FF6347 EVERY MONING AT 8am
         DistributionPoint -[#blue]> PrintingSystem : GET : Staus ID_card
         skinparam responseMessageBelowArrow true
