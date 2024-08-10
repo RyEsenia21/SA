@@ -1,44 +1,58 @@
 @startuml
 actor App_Client as Client #FFD700
 boundary "Система регистрации" as RegistrationSystem #FF00FF
-queue "MQ" as MQ #FF1493
+queue "EDA MQ" as MQ #FF1493
 entity "Антифрод" as AntifraudSystem #8B0000
 participant "Выпуск карты" as PrintingSystem #808000
 participant "Отделение банка" as DistributionPoint #32CD32
 
 skinparam responseMessageBelowArrow true
-Client -[#blue]> RegistrationSystem: POST: "Заполненная анкета"
-Client <[#green]-- RegistrationSystem: Response:  OK
+Activate Client
+Client -[#blue]>> RegistrationSystem : 1. POST: "Заполненная анкета"
+Activate RegistrationSystem
+Client <<[#green]-- RegistrationSystem : 2. Response:  OK  : "Ваша заявка принята!"
 
 skinparam sequenceMessageAlign center
 alt#FF1493 Анкета прошла валидацию
-    RegistrationSystem -[#blue]> MQ: POST: id{dataClient}
+    RegistrationSystem -[#blue]> MQ : 3.  POST: id{dataClient}
+    Activate AntifraudSystem
+    Activate MQ
     skinparam responseMessageBelowArrow true
-    MQ -[#blue]> AntifraudSystem: POST:id{dataClient}
+    MQ -[#blue]>> AntifraudSystem : 4. POST:id{dataClient}
     note right: Рассмотрение в теченни 24ч.
-    MQ <[#green]-- AntifraudSystem : Response: OK
-    MQ --[#F4A460]> Client: PUSH: "Ваша заявка на рассмотрении!"
+    MQ <<[#green]-- AntifraudSystem : 5. Response: OK
+    MQ --[#F4A460]> Client: 6. PUSH: "Ваша заявка на рассмотрении!"
     alt#FF1493 Фрод не пройден
-        AntifraudSystem -[#red]> MQ: Отказ : {id_client}
-        MQ --[#F4A460]> Client: PUSH: Вам отказано в получении карты!
+        AntifraudSystem -[#red]>> MQ: 7. Отказ : {id_client}
+        MQ --[#F4A460]> Client: 8. PUSH: Вам отказано в получении карты!
     else Фрод пройден
         loop#FF6347 EVERY 3H
-        MQ -[#blue]> AntifraudSystem: GET : Status{Client} : ok
-        MQ <[#green]-- AntifraudSystem : Response: Actual Status{ID_Client}
+        MQ -[#blue]>> AntifraudSystem: 9. GET : Status{Client} : ok
+        MQ <<[#green]-- AntifraudSystem : 10. Response: Actual Status{ID_Client}
         end
-        AntifraudSystem -[#blue]> PrintingSystem: POST : Выпусти и отправь карту
+        AntifraudSystem -[#blue]>> PrintingSystem : 11. POST : Выпусти и отправь карту
+        Activate PrintingSystem
         note right: До 3-х раб.дней!
-        AntifraudSystem <[#green]-- PrintingSystem : Response: OK
-        MQ --[#F4A460]> Client: PUSH: Ваша карта будет готова в теченни "Х" дней!
+        AntifraudSystem <<[#green]-- PrintingSystem : 12. Response: OK
+        Deactivate AntifraudSystem
+        MQ --[#F4A460]> Client : 13. PUSH: Ваша карта будет готова в теченни "Х" дней!
+        Deactivate MQ
         note right: Отправка PUSH-уведомлений осуществляется с 8:00 до 22:00!
         loop#FF6347 EVERY MONING AT 8am
-        DistributionPoint -[#blue]> PrintingSystem : GET : Staus ID_card
+        DistributionPoint -[#blue]>> PrintingSystem : 14. GET : Staus ID_card
+        Activate DistributionPoint
         skinparam responseMessageBelowArrow true
-        DistributionPoint <[#green]-- PrintingSystem: POST : Переданно в отделение
+        DistributionPoint <<[#green]-- PrintingSystem: 15. POST : Переданно в отделение
+        Deactivate PrintingSystem
         end
-        DistributionPoint --[#F4A460]> Client: PUSH: Карта готова к выдаче! Приди и возьми ее cowboy &#128522;
+        DistributionPoint --[#F4A460]> Client: 16. PUSH: "Карта готова к выдаче! Приди и возьми ее cowboy &#128522;"
+        Deactivate DistributionPoint
     end
 else Анкета не прошла валидацию
-    RegistrationSystem --[#red]> Client: Response : УВЫ! Ты криво заполнил данные! Иди учись!
+    RegistrationSystem --[#red]>> Client: 17. Response : "УВЫ! Ты криво заполнил данные! Иди учись!"
+    Deactivate RegistrationSystem
+    Deactivate Client
 end
 @enduml
+
+' - Я не нашел как показать в диаграмме соохранение состояния.
