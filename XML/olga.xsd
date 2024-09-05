@@ -1,0 +1,21 @@
+<xsd:element name="PERSON">
+  <xsd:complexType>
+    <xsd:sequence>
+      <xsd:element name="FULL_NAME" type="xsd:string"/>
+      <xsd:element name="DATE_OF_BIRTH" type="xsd:date"/>
+      <xsd:element name="AGE" type="xsd:positiveInteger"/>
+      <xsd:element name="LOCATION" type="xsd:string"/>
+      <xsd:element name="ADDRESS">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CITY" type="xsd:string"/>
+            <xsd:element name="STREET" type="xsd:string"/>
+            <xsd:element name="HOUSE_NUMBER" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VALUE" type="xsd:decimal"/>
+      <xsd:element name="STATUS" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:element>
