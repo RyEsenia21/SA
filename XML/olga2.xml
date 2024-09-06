@@ -1,4 +1,5 @@
-<PERSON>
+<?xml version="1.0" encoding="UTF-8"?>
+<PERSON xmlns="http://www.olegisbetter.com/schema">
   <FULL_NAME>John Doe</FULL_NAME>
   <DATE_OF_BIRTH>1985-07-15</DATE_OF_BIRTH>
   <AGE>39</AGE>
@@ -9,5 +10,5 @@
     <HOUSE_NUMBER>1007</HOUSE_NUMBER>
   </ADDRESS>
   <VALUE>4999.99</VALUE>
-  <STATUS>Active</STATUS>
+  <STATUS>True</STATUS>
 </PERSON>

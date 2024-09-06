@@ -1,21 +1,30 @@
-<xsd:element name="PERSON">
-  <xsd:complexType>
-    <xsd:sequence>
-      <xsd:element name="FULL_NAME" type="xsd:string"/>
-      <xsd:element name="DATE_OF_BIRTH" type="xsd:date"/>
-      <xsd:element name="AGE" type="xsd:positiveInteger"/>
-      <xsd:element name="LOCATION" type="xsd:string"/>
-      <xsd:element name="ADDRESS">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="CITY" type="xsd:string"/>
-            <xsd:element name="STREET" type="xsd:string"/>
-            <xsd:element name="HOUSE_NUMBER" type="xsd:string"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="VALUE" type="xsd:decimal"/>
-      <xsd:element name="STATUS" type="xsd:string"/>
-    </xsd:sequence>
-  </xsd:complexType>
-</xsd:element>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.olegisbetter.com/schema"
+            xmlns="http://www.olegisbetter.com/schema"
+            elementFormDefault="qualified/unqualified/default">
+<xs:element name="PERSON">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FULL_NAME" type="xs:string" use="required"/>
+        <xs:element name="DATE_OF_BIRTH" type="xs:date"/>
+        <xs:element name="AGE" type="xs:integer" use="required"/>
+          <xs:minInclusive value="18"/>
+          <xs:maxInclusive value="100"/>
+        <xs:element name="LOCATION" type="xs:string"/>
+        <xs:element name="ADDRESS">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CITY" type="xs:string"/>
+              <xs:element name="STREET" type="xs:string"/>
+              <xs:element name="HOUSE_NUMBER" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="VALUE" type="xs:decimal"/>
+        <xs:element name="STATUS" type="xs:boolean" use="required"/>
+          <xs:enumiration value="True"/>
+          <xs:enumiration value="False"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
