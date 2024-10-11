@@ -1,0 +1,21 @@
+Метод: GET
+URL: /api/cashback-history
+
+Параметры запроса:
+
+page (integer): номер страницы для пагинации (по умолчанию 1).
+limit (integer): количество дней на странице (например, 4).
+fromDate (string): фильтр для получения кешбека начиная с конкретной даты (формат YYYY-MM-DD)
+
+Описание полей ответа:
+
+totalPages (integer): общее количество страниц с историей кешбека.
+currentPage (integer): текущая страница.
+cashbackHistory (array): массив с данными кешбека по датам.
+date (string): дата получения кешбека.
+transactions (array): массив с информацией о транзакциях за эту дату.
+partnerId (string): уникальный идентификатор партнера.
+partnerName (string): название партнера.
+iconUrl (string): URL-адрес иконки партнера.
+cashbackAmount (float): сумма возвращенного кешбека.
+category (string): категория, в которой была совершена покупка.

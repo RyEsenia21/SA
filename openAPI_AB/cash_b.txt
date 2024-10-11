@@ -1,0 +1,64 @@
+GET /api/cashback-history?page=1&limit=4&fromDate=2024-03-21
+{
+  "totalPages": 10,
+  "currentPage": 1,
+  "cashbackHistory": [
+    {
+      "date": "2024-03-27",
+      "transactions": [
+        {
+          "partnerId": "av-001",
+          "partnerName": "Азбука Вкуса",
+          "iconUrl": "https://example.com/icons/azbuka-vkusa.png",
+          "cashbackAmount": 1260.19,
+          "category": "Продукты"
+        },
+        {
+          "partnerId": "pt-002",
+          "partnerName": "Пятерочка",
+          "iconUrl": "https://example.com/icons/pyaterochka.png",
+          "cashbackAmount": 750.99,
+          "category": "Продукты"
+        }
+      ]
+    },
+    {
+      "date": "2024-03-26",
+      "transactions": [
+        {
+          "partnerId": "pt-002",
+          "partnerName": "Пятерочка",
+          "iconUrl": "https://example.com/icons/pyaterochka.png",
+          "cashbackAmount": 780.19,
+          "category": "Продукты"
+        },
+        {
+          "partnerId": "lenta-003",
+          "partnerName": "Лента",
+          "iconUrl": "https://example.com/icons/lenta.png",
+          "cashbackAmount": 210.99,
+          "category": "Продукты"
+        }
+      ]
+    },
+    {
+      "date": "2024-03-21",
+      "transactions": [
+        {
+          "partnerId": "am-004",
+          "partnerName": "Амазонка",
+          "iconUrl": "https://example.com/icons/amazomka.png",
+          "cashbackAmount": 400.00,
+          "category": "Косметика"
+        },
+        {
+          "partnerId": "okey-005",
+          "partnerName": "О'Кей",
+          "iconUrl": "https://example.com/icons/okey.png",
+          "cashbackAmount": 150.00,
+          "category": "Продукты"
+        }
+      ]
+    }
+  ]
+}
